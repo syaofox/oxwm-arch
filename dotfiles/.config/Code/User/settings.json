@@ -1,0 +1,9 @@
+{
+    "workbench.colorTheme": "Visual Studio Light",
+    "git.autofetch": true,
+    "extensions.ignoreRecommendations": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "'Droid Sans Mono', monospace,'JetBrainsMono Nerd Font'"
+}

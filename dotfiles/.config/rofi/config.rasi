@@ -1,0 +1,17 @@
+configuration{
+    modi: ["drun", "window", "run"];
+    icon-theme: "Papirus-Dark";
+    show-icons: false;
+    terminal: "wezterm";
+    drun-display-format: "{icon} {name}";
+    icon-color: "@text";
+    location: 0;
+    disable-history: false;
+    sidebar-mode: false;
+    display-drun: " ";
+    display-run: " ";
+    display-window: " ";
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+@import "theme.rasi"

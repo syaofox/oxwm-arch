@@ -1,0 +1,25 @@
+[user]
+	name = syaofox
+	email = syaofox@gmail.com
+[core]
+	editor = code --wait
+	# editor = nvim
+	autocrlf = input
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	ls = log --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	co = checkout
+	ci = commit
+	br = branch
+	ac = "!f() { git add -A && git commit -m \"$1\"; }; f"
+	# 仅修改上一次的提交说明 (会打开编辑器)
+	ce = commit --amend	
+	# 直接在命令行修改上一次的提交说明 (不需要打开编辑器)
+	cem = commit --amend -m
+[color]
+	ui = auto
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

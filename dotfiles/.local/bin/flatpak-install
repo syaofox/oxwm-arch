@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# 显示一个用于挑选并安装新 Flatpak 软件包的模糊查找 TUI 界面。
+
+# fzf 参数配置
+fzf_args=(
+  --multi
+  --preview 'flatpak remote-info flathub {1} 2>/dev/null || flatpak info {1} 2>/dev/null'
+  --preview-label=' alt-p: 切换描述, alt-j/k: 滚动, tab: 多选 '
+  --preview-label-pos='bottom'
+  --preview-window 'down:65%:wrap'
+  --bind 'alt-p:toggle-preview'
+  --bind 'alt-d:preview-half-page-down,alt-u:preview-half-page-up'
+  --bind 'alt-k:preview-up,alt-j:preview-down'
+  --color 'pointer:green,marker:green'
+  --header '使用 TAB 选择多个软件，按 Enter 开始安装'
+)
+
+# 获取远程软件列表并调用 fzf
+pkg_names=$(flatpak remote-ls --app --columns=application 2>/dev/null | fzf "${fzf_args[@]}")
+
+if [[ -n $pkg_names ]]; then
+  # 打印选中的包名列表
+  echo -e "\n\033[1;34m准备安装以下软件包:\033[0m"
+  echo "-----------------------------------"
+  i=1
+  # 使用 mapfile 将换行符分隔的字符串转换为数组
+  mapfile -t pkgs_array <<< "$pkg_names"
+  
+  for pkg in "${pkgs_array[@]}"; do
+    printf "%2d. \033[1;32m%s\033[0m\n" $((i++)) "$pkg"
+  done
+  echo "-----------------------------------"
+  
+  # 确认提示
+  read -p "是否继续安装？ [Y/n] " -n 1 -r
+  echo
+  
+  if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+    echo -e "\n\033[1;33m正在从 Flathub 安装，请稍候...\033[0m\n"
+    
+    # 核心修复说明：
+    # 1. 去掉了错误的 --non-interactive
+    # 2. 使用 -y 自动确认
+    # 3. 这里的批量安装是解决乱码的关键
+    flatpak install -y flathub "${pkgs_array[@]}"
+    
+    # 检查退出码
+    if [ $? -eq 0 ]; then
+      echo -e "\n\033[1;32m✔ 所有软件包已成功安装！\033[0m"
+    else
+      echo -e "\n\033[1;31m✘ 安装过程中出现错误。\033[0m"
+    fi
+  else
+    echo "操作已取消。"
+  fi
+fi

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Show a fuzzy-finder TUI for picking new AUR packages to install.
+
+fzf_args=(
+  --multi
+  --preview 'yay -Siia {1}'
+  --preview-label='alt-p: toggle description, alt-b/B: toggle PKGBUILD, alt-j/k: scroll, tab: multi-select'
+  --preview-label-pos='bottom'
+  --preview-window 'down:65%:wrap'
+  --bind 'alt-p:toggle-preview'
+  --bind 'alt-d:preview-half-page-down,alt-u:preview-half-page-up'
+  --bind 'alt-k:preview-up,alt-j:preview-down'
+  --bind 'alt-b:change-preview:yay -Gpa {1} | tail -n +5'
+  --bind 'alt-B:change-preview:yay -Siia {1}'
+  --color 'pointer:green,marker:green'
+)
+
+pkg_names=$(yay -Slqa | fzf "${fzf_args[@]}")
+
+if [[ -n $pkg_names ]]; then
+  # 打印选中的包名列表
+  echo -e "\n\033[1;34mPreparing to install the following AUR packages:\033[0m"
+  echo "-----------------------------------"
+  i=1
+  # 使用 mapfile 将换行符分隔的字符串转换为数组
+  mapfile -t pkgs_array <<< "$pkg_names"
+  
+  for pkg in "${pkgs_array[@]}"; do
+    printf "%2d. \033[1;32m%s\033[0m\n" $((i++)) "$pkg"
+  done
+  echo "-----------------------------------"
+  
+  # 确认提示
+  read -p "Do you want to proceed with the installation? [Y/n] " -n 1 -r
+  echo
+  
+  if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+    echo -e "\n\033[1;33mInstalling AUR packages, please wait...\033[0m\n"
+    
+    # 批量安装，添加 aur/ 前缀
+    aur_pkgs=()
+    for pkg in "${pkgs_array[@]}"; do
+      aur_pkgs+=("aur/$pkg")
+    done
+    
+    yay -S --noconfirm "${aur_pkgs[@]}"
+    
+    # 检查退出码
+    if [ $? -eq 0 ]; then
+      echo -e "\n\033[1;32m✔ All AUR packages installed successfully!\033[0m"
+    else
+      echo -e "\n\033[1;31m✘ Errors occurred during installation.\033[0m"
+    fi
+  else
+    echo "Installation cancelled."
+  fi
+fi
