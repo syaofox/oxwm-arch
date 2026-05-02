@@ -319,7 +319,7 @@ oxwm.bar.set_separator_title_blocks("", colors.sep)
 
 oxwm.key.bind({ modkey }, "Return", oxwm.spawn_terminal())
 -- Launch Dmenu
-oxwm.key.bind({ modkey }, "Space", oxwm.spawn({ "sh", "-c", "oxwmcmd.sh menu" }))
+oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "oxwmcmd.sh menu" }))
 -- Copy screenshot to clipboard
 -- oxwm.key.bind({ modkey }, "S", oxwm.spawn({ "sh", "-c", "maim -s | xclip -selection clipboard -t image/png" }))
 oxwm.key.bind({ modkey }, "Q", oxwm.client.kill())
@@ -448,10 +448,10 @@ oxwm.key.bind({}, "XF86AudioMute", oxwm.spawn({ "sh", "-c", "~/.local/bin/volume
 -- Keychords allow you to bind multiple-key sequences (like Emacs or Vim)
 -- Format: {{modifiers}, key1}, {{modifiers}, key2}, ...
 -- Example: Press Mod4+Space, then release and press T to spawn a terminal
--- oxwm.key.chord({
---     { { modkey }, "Space" },
---     { {},         "T" }
--- }, oxwm.spawn_terminal()) 
+oxwm.key.chord({
+    { { modkey }, "Space" },
+    { {},         "T" }
+}, oxwm.spawn_terminal()) 
 
 -------------------------------------------------------------------------------
 -- Autostart
