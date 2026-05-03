@@ -218,6 +218,17 @@ def render(theme_name):
         f.write(rendered)
     print("  fish      ✓")
 
+    # 8. slock Xresources colors
+    xresources_dir = os.path.join(HOME, ".Xresources.d")
+    slock_xresources = os.path.join(xresources_dir, "slock")
+    os.makedirs(xresources_dir, exist_ok=True)
+    slock_tpl = os.path.join(TEMPLATES_DIR, "slock.Xresources.tpl")
+    rendered = render_template(slock_tpl, vars_dict)
+    with open(slock_xresources, "w") as f:
+        f.write(rendered)
+    os.system(f"xrdb -merge {slock_xresources}")
+    print("  slock     ✓")
+
 
 def main():
     theme = sys.argv[1] if len(sys.argv) > 1 else ""

@@ -44,24 +44,24 @@ return {
 
 **Key derivation rules** (how templates use each key):
 
-| Key | rofi | dunst | wezterm | fish | oxwm |
-|---|---|---|---|---|---|
-| `bg` | bg | urgency_low bg | background | — | bg |
-| `text` | text, entry | foreground | foreground | normal, param, host | — |
-| `surface` | surface0 | urgency_normal bg | ansi[0] | selection bg | — |
-| `red` | prompt char | critical fg/frame | ansi[1] | error | red |
-| `green` | — | — | ansi[2] | quote | green |
-| `yellow` | — | — | ansi[3] | search_match bg | — |
-| `light_blue` | — | — | ansi[4] | command | light_blue |
-| `purple` | mauve | — | ansi[5] | end, escape, pager_prefix | purple |
-| `cyan` | — | — | ansi[6] | redirection, operator | cyan |
-| `blue` | — | — | — | cwd, user, pager_progress | blue |
-| `lavender` | border color | — | — | — | lavender |
-| `accent` | — | frame_color, highlight | — | — | — |
-| `fg` | — | — | — | — | fg |
-| `grey` | — | — | — | — | grey |
-| `muted` | — | — | — | autosuggestion, pager_description | — |
-| `sep` | — | — | — | — | sep |
+| Key | rofi | dunst | wezterm | fish | oxwm | slock |
+|---|---|---|---|---|---|---|---|
+| `bg` | bg | urgency_low bg | background | — | bg | init (idle bg) |
+| `text` | text, entry | foreground | foreground | normal, param, host | — | text (message) |
+| `surface` | surface0 | urgency_normal bg | ansi[0] | selection bg | — | — |
+| `red` | prompt char | critical fg/frame | ansi[1] | error | red | fail (wrong pw) |
+| `green` | — | — | ansi[2] | quote | green | — |
+| `yellow` | — | — | ansi[3] | search_match bg | — | — |
+| `light_blue` | — | — | ansi[4] | command | light_blue | input (typing) |
+| `purple` | mauve | — | ansi[5] | end, escape, pager_prefix | purple | — |
+| `cyan` | — | — | ansi[6] | redirection, operator | cyan | — |
+| `blue` | — | — | — | cwd, user, pager_progress | blue | — |
+| `lavender` | border color | — | — | — | lavender | — |
+| `accent` | — | frame_color, highlight | — | — | — | — |
+| `fg` | — | — | — | — | fg | — |
+| `grey` | — | — | — | — | grey | — |
+| `muted` | — | — | — | autosuggestion, pager_description | — | — |
+| `sep` | — | — | — | — | sep | — |
 
 ### 3. Create `theme.conf`
 
@@ -123,6 +123,7 @@ Verify by switching to the theme and checking each component:
 | fish | Start typing a command — autosuggestion must be clearly visible |
 | yazi | Open in a terminal — check flavor applied |
 | GTK apps | Open nemo or any GTK app — check titlebar/widget colors |
+| slock | `Mod+Shift+L` — lock screen bg (init), typing highlight (input), error flash (fail), message text |
 
 ## Troubleshooting
 
@@ -131,6 +132,8 @@ Verify by switching to the theme and checking each component:
 **Dunst frame missing**: `accent` value may not contrast enough with `bg`. The accent is used for the notification frame and highlight border.
 
 **Terminal black (`ansi[0]` = `surface`) blends with bg**: Some terminals want a clearly distinct black from the main bg. Add a `wezterm.lua` override in the theme dir to set custom ANSI values.
+
+**slock input color too subtle**: If `light_blue` is hard to see on `bg`, override in `colors.lua` or adjust the value. The input state should clearly contrast with the idle state.
 
 ## Important files reference
 
@@ -142,6 +145,7 @@ Verify by switching to the theme and checking each component:
 | Dunst template | `dotfiles/.config/themes/templates/dunst.conf.tpl` | Dunst config with `{{key}}` placeholders |
 | Wezterm template | `dotfiles/.config/themes/templates/wezterm.lua.tpl` | Terminal colors with auto-ANSIs |
 | Fish template | `dotfiles/.config/themes/templates/fish-colors.fish.tpl` | Shell colors |
+| Slock template | `dotfiles/.config/themes/templates/slock.Xresources.tpl` | Lock screen colors (→ `~/.Xresources.d/slock`, loaded by xrdb) |
 | Render engine | `dotfiles/.config/themes/render-theme.py` | Reads theme → renders templates → writes configs |
 | Switch script | `dotfiles/.local/bin/switch-theme.sh` | Rofi picker + render + service restarts |
 
@@ -155,5 +159,6 @@ rofi.rasi.tpl:    bg text red lavender surface purple
 dunst.conf.tpl:   bg text red surface accent
 wezterm.lua.tpl:  bg text surface red green yellow light_blue purple cyan
 fish.fish.tpl:    text light_blue red surface yellow green cyan purple blue muted
+slock.Xresources.tpl:  bg light_blue red text
 theme.conf:       rofi_font yazi_flavor gtk_theme gtk_icon gtk_font dark_mode
 ```

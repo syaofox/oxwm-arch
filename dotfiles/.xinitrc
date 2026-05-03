@@ -20,6 +20,9 @@ else
     # 如果不想单独建文件，可以用 printf 管道给 xrdb
     printf "Xft.dpi: 96\nXft.antialias: 1\nXft.hinting: 1\nXft.hintstyle: hintslight\nXft.rgba: rgb" | xrdb -merge
 fi
+if [ -f ~/.Xresources.d/slock ]; then
+    xrdb -merge ~/.Xresources.d/slock
+fi
 
 # 3. X 基础设置
 xset -dpms
