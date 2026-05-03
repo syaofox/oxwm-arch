@@ -6,7 +6,7 @@
     red: {{red}};
     surface0: {{surface}};
 
-    font: "JetBrainsMono Nerd Font 11";
+    font: "{{rofi_font}}";
     background-color: @bg;
     border: 0px;
 }
