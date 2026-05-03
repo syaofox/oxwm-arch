@@ -1,7 +1,7 @@
 configuration{
     modi: ["drun", "window", "run"];
     icon-theme: "Papirus-Dark";
-    show-icons: false;
+    show-icons: true;
     terminal: "wezterm";
     drun-display-format: "{icon} {name}";
     icon-color: "@text";
