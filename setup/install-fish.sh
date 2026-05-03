@@ -11,7 +11,7 @@ if ! sudo pacman -S --needed --noconfirm fish fisher; then
 fi
 
 log_info "Changing default shell to fish..."
-if ! sudo chsh -s /usr/bin/fish; then
+if ! sudo chsh -s /usr/bin/fish "$(whoami)"; then
     log_error "Failed to change shell"
     exit 1
 fi
