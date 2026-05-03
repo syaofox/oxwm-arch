@@ -31,7 +31,7 @@ Each step has retry/skip/exit on failure.
 - Default shell: **fish** (`/usr/bin/fish`, set via `chsh`)
 - Plugin manager: **fisher**
 - Plugins list: `dotfiles/.config/fish/fish_plugins` — `pure-fish/pure`, `PatrickF1/fzf.fish`
-- Config split: `conf.d/01-env.fish` (env vars), `03-aliases.fish` (aliases/abbr), `04-fzf.fish`, `05-yazi.fish`, `06-zoxide.fish`
+- Config split: `conf.d/01-env.fish` (env vars), `02-colors.fish` (auto-gen by theme), `03-aliases.fish` (aliases/abbr), `04-fzf.fish`, `05-yazi.fish`, `06-zoxide.fish`
 
 ## X session
 
@@ -52,10 +52,10 @@ Themes stored in `~/.config/themes/<name>/` — each dir has 2 files:
 
 | File | Purpose | Extends |
 |---|---|---|
-| `colors.lua` | 14 color keys (11 oxwm + text/surface/yellow/accent) | oxwm, rofi, dunst, wezterm (ANSIs auto-generated) |
+| `colors.lua` | 15 color keys (11 oxwm + text/surface/yellow/accent/muted) | oxwm, rofi, dunst, wezterm (ANSIs auto-generated), fish |
 | `theme.conf` | `yazi_flavor`, `gtk_theme`, `gtk_icon`, `gtk_font`, `dark_mode` | yazi, gtk2/3/4, xsettingsd |
 
-Shared templates in `~/.config/themes/templates/*.tpl` use `{{key}}` placeholders. `render-theme.py` reads colors + conf, renders all templates, updates all configs. Bash wrapper handles service restarts.
+Shared templates in `~/.config/themes/templates/*.tpl` use `{{key}}` placeholders. `render-theme.py` reads colors + conf, renders all templates, updates all configs (including `conf.d/02-colors.fish`). Bash wrapper handles service restarts.
 
 Built-in themes: `tokyo-night`, `nord`. Usage: `switch-theme.sh` (rofi), `switch-theme.sh nord`.
 

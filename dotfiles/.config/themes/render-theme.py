@@ -210,6 +210,14 @@ def render(theme_name):
 
     print("  gtk       ✓")
 
+    # 7. Fish shell colors
+    fish_tpl = os.path.join(TEMPLATES_DIR, "fish-colors.fish.tpl")
+    fish_out = os.path.join(HOME, ".config/fish/conf.d/02-colors.fish")
+    rendered = render_template(fish_tpl, vars_dict)
+    with open(fish_out, "w") as f:
+        f.write(rendered)
+    print("  fish      ✓")
+
 
 def main():
     theme = sys.argv[1] if len(sys.argv) > 1 else ""

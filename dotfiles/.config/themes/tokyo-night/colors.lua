@@ -15,4 +15,5 @@ return {
     surface = "#24283b",
     yellow = "#e0af68",
     accent = "#bb9af7",
+    muted = "#565f89",
 }
