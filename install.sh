@@ -53,6 +53,7 @@ run_step "Configure AUR build threads" "./setup/configure-makepkg.sh"
 
 run_step "Install system dependencies" "./setup/install-deps.sh"
 run_step "Install OXWM" "./setup/install-oxwm.sh"
+run_step "Install slock" "./setup/install-slock.sh"
 run_step "Install applications" "./setup/install-apps.sh"
 
 

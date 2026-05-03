@@ -35,6 +35,7 @@ PACMAN_packages=(
     polkit-gnome
     # pasystray
 
+    xss-lock
     xclip
     xfce4-clipman-plugin
     xwallpaper

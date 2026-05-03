@@ -23,11 +23,13 @@ fi
 
 # 3. X 基础设置
 xset -dpms
-xset s off
-xset s noblank
+xset s 600 s noblank
 xrandr --output Virtual-1 --mode 1440x900 &
 
-# 4. 启动 Gnome Keyring
+# 4. 自动锁屏 (10分钟无操作)
+xss-lock -- slock &
+
+# 5. 启动 Gnome Keyring
 if [ -z "$GNOME_KEYRING_CONTROL" ]; then
     eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
     export SSH_AUTH_SOCK
@@ -35,7 +37,7 @@ if [ -z "$GNOME_KEYRING_CONTROL" ]; then
 fi
 
 
-# 5. 确保 systemd --user 在运行 (pam_systemd 通常在登录时已启动)
+# 6. 确保 systemd --user 在运行 (pam_systemd 通常在登录时已启动)
 XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 if ! systemctl --user is-system-running --quiet 2>/dev/null; then
     /usr/lib/systemd/systemd --user &

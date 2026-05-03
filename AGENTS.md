@@ -7,7 +7,7 @@ Arch Linux minimal → OXWM tiling WM desktop environment. Dotfiles + setup scri
 `install.sh` orchestrates everything. It sources `setup/utils.sh` and runs `setup/*.sh` in this order:
 
 1. `upgrade-system` → `install-yay` → `configure-makepkg`
-2. `install-deps` → `install-oxwm` → `install-apps`
+2. `install-deps` → `install-oxwm` → `install-slock` → `install-apps`
 3. `install-fonts` → `install-nemo` → `install-fcitx5` → `install-docker` → `install-nvidia` → `install-flathub`
 4. `deploy-dotfiles` → `update-usergroup` → `configure-autologin` → `install-fish`
 
@@ -19,6 +19,15 @@ Each step has retry/skip/exit on failure.
 - Build: `zig build -Doptimize=ReleaseSmall`
 - Install: `sudo zig build -Doptimize=ReleaseSmall --prefix /usr install`
 - Dependencies: `zig libx11 libxft freetype2 fontconfig libxinerama`
+
+## slock — built from source (fork)
+
+- Clone: `https://github.com/syaofox/slock.git` (`arch` branch) → `/tmp/slock`
+- Build/Install: `sudo make clean install`
+- Dependencies: `libx11 libxext libxrandr libxinerama`
+- Config: Nord theme colors in `config.def.h` (compiled-in)
+- Keybind `Mod+Shift+L` → `oxwmcmd.sh lock` → `slock`
+- Auto-lock: `xss-lock -- slock &` in `.xinitrc` (screensaver triggers at 10 min idle)`
 - Config: `~/.config/oxwm/config.lua` — **no compilation needed on edit**, reload with `Mod+Shift+R`
 - Colors: `~/.config/oxwm/colors/custom.lua` is imported by `config.lua`
 
