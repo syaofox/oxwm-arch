@@ -8,7 +8,7 @@ case "$mode" in
         rofi -show drun
         ;;
     file)
-        nemo --no-desktop
+        exec wezterm start -- yazi
         ;;
     lock)
         slock -m "Single is simple, double is double."
