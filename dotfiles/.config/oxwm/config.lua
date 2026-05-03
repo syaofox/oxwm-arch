@@ -40,6 +40,11 @@ local bar_font = "JetBrainsMono Nerd Font Propo:style=Bold:size=10"
 
 -- Define your blocks
 -- Similar to widgets in qtile, or dwmblocks
+-- Optional `name` field on any block allows trigger-based refresh:
+--   name = "wifi",
+-- Then from keybind actions: oxwm.refresh_block("wifi") forces an
+-- immediate update regardless of the block's interval setting.
+-- Useful for toggle switches (WiFi, DND, etc.) that need instant feedback.
 local blocks = {
 
     -- 网速
