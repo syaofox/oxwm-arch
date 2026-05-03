@@ -1,10 +1,10 @@
 * {
-    bg: #2e3440;
-    text: #d8dee9;
-    lavender: #81a1c1;
-    mauve: #b48ead;
-    red: #bf616a;
-    surface0: #3b4252;
+    bg: {{bg}};
+    text: {{text}};
+    lavender: {{lavender}};
+    mauve: {{purple}};
+    red: {{red}};
+    surface0: {{surface}};
 
     font: "JetBrainsMono Nerd Font 11";
     background-color: @bg;

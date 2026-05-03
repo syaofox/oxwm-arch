@@ -48,17 +48,14 @@ All custom actions via `oxwmcmd.sh` subcommands:
 
 ### Theme switching (`Mod+Shift+T` → `oxwmcmd.sh theme` → `switch-theme.sh`)
 
-Themes stored in `~/.config/themes/<name>/` — each dir has 7 template files:
+Themes stored in `~/.config/themes/<name>/` — each dir has 2 files:
 
-| File | Target | Applied by |
+| File | Purpose | Extends |
 |---|---|---|
-| `oxwm-colors.lua` | `~/.config/oxwm/colors/custom.lua` | oxwm `Mod+Shift+R` hot-reload |
-| `rofi.rasi` | `~/.config/rofi/theme.rasi` | read on next launch |
-| `dunst.conf` | `~/.config/dunst/dunstrc` | `pkill dunst; dunst &` |
-| `wezterm.lua` | `~/.config/wezterm/theme.lua` | read on next launch |
-| `yazi-flavor` | content → `theme.toml` flavor field | read on next launch |
-| `gtk-theme-name` | gtkrc + settings.ini + xsettingsd | `pkill xsettingsd; xsettingsd &` |
-| `gtk-icon-theme-name` | icon theme in gtkrc + xsettingsd | same restart |
+| `colors.lua` | 14 color keys (11 oxwm + text/surface/yellow/accent) | oxwm, rofi, dunst, wezterm (ANSIs auto-generated) |
+| `theme.conf` | `yazi_flavor`, `gtk_theme`, `gtk_icon`, `gtk_font`, `dark_mode` | yazi, gtk2/3/4, xsettingsd |
+
+Shared templates in `~/.config/themes/templates/*.tpl` use `{{key}}` placeholders. `render-theme.py` reads colors + conf, renders all templates, updates all configs. Bash wrapper handles service restarts.
 
 Built-in themes: `tokyo-night`, `nord`. Usage: `switch-theme.sh` (rofi), `switch-theme.sh nord`.
 

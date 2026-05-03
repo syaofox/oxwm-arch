@@ -3,6 +3,7 @@ set -euo pipefail
 
 THEMES_DIR="$HOME/.config/themes"
 CURRENT_THEME_FILE="$HOME/.config/current_theme"
+RENDER_SCRIPT="$THEMES_DIR/render-theme.py"
 
 log() { echo "[$(date +'%H:%M:%S')] $*"; }
 
@@ -14,96 +15,62 @@ usage() {
     exit 0
 }
 
-# No args → rofi picker
+list_themes() {
+    for d in "$THEMES_DIR"/*/; do
+        name=$(basename "$d")
+        [ "$name" = "templates" ] && continue
+        echo "$name"
+    done
+}
+
+theme=""
 if [ $# -eq 0 ]; then
-    if ! command -v rofi &>/dev/null; then
-        log "rofi not found, falling back to read"
+    if command -v rofi &>/dev/null; then
+        theme=$(list_themes | rofi -dmenu -p "Switch Theme" -i)
+    else
         echo "Available themes:"
-        ls -1 "$THEMES_DIR"
+        list_themes
         echo -n "Theme: "
         read -r theme
-    else
-        theme=$(ls -1 "$THEMES_DIR" | rofi -dmenu -p "Switch Theme" -i)
     fi
     [ -z "$theme" ] && exit 0
-    set -- "$theme"
+elif [ "$1" = "list" ]; then
+    list_themes
+    exit 0
+elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    usage
+else
+    theme="$1"
 fi
 
-case "${1:-}" in
-    -h|--help) usage ;;
-    list)
-        ls -1 "$THEMES_DIR"
-        exit 0
-        ;;
-esac
-
-theme="$1"
-THEME_DIR="$THEMES_DIR/$theme"
-
-if [ ! -d "$THEME_DIR" ]; then
-    log "ERROR: Theme '$theme' not found in $THEMES_DIR"
+if [ ! -d "$THEMES_DIR/$theme" ]; then
+    log "ERROR: Theme '$theme' not found"
     exit 1
 fi
 
 log "Switching to theme: $theme"
 
-# 1. OXWM colors
-cp "$THEME_DIR/oxwm-colors.lua" "$HOME/.config/oxwm/colors/custom.lua"
-log "  oxwm colors  ✓"
+# Render all templates via Python
+python3 "$RENDER_SCRIPT" "$theme"
 
-# 2. Rofi theme
-cp "$THEME_DIR/rofi.rasi" "$HOME/.config/rofi/theme.rasi"
-log "  rofi theme   ✓"
-
-# 3. Dunst
-cp "$THEME_DIR/dunst.conf" "$HOME/.config/dunst/dunstrc"
+# Restart dunst
 pkill dunst 2>/dev/null || true
 sleep 0.3
 dunst &
-log "  dunst        ✓"
+log "  dunst restart ✓"
 
-# 4. Wezterm
-cp "$THEME_DIR/wezterm.lua" "$HOME/.config/wezterm/theme.lua"
-log "  wezterm      ✓"
+# Restart xsettingsd
+pkill xsettingsd 2>/dev/null || true
+sleep 0.3
+xsettingsd &
+log "  xsettingsd  ✓"
 
-# 5. Yazi flavor
-if [ -f "$THEME_DIR/yazi-flavor" ]; then
-    flavor=$(cat "$THEME_DIR/yazi-flavor")
-    sed -i "s/dark = \".*\"/dark = \"$flavor\"/" "$HOME/.config/yazi/theme.toml"
-    sed -i "s/light = \".*\"/light = \"$flavor\"/" "$HOME/.config/yazi/theme.toml"
-    log "  yazi flavor  ✓ ($flavor)"
-fi
-
-# 6. GTK theme + xsettingsd
-if [ -f "$THEME_DIR/gtk-theme-name" ]; then
-    gtk_theme=$(cat "$THEME_DIR/gtk-theme-name")
-    gtk_icons=$(cat "$THEME_DIR/gtk-icon-theme-name")
-
-    sed -i "s/gtk-theme-name = \".*\"/gtk-theme-name = \"$gtk_theme\"/" "$HOME/.gtkrc-2.0"
-    sed -i "s/gtk-icon-theme-name = \".*\"/gtk-icon-theme-name = \"$gtk_icons\"/" "$HOME/.gtkrc-2.0"
-
-    sed -i "s/gtk-theme-name=.*/gtk-theme-name=$gtk_theme/" "$HOME/.config/gtk-3.0/settings.ini"
-    sed -i "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=$gtk_icons/" "$HOME/.config/gtk-3.0/settings.ini"
-
-    sed -i "s/gtk-theme-name=.*/gtk-theme-name=$gtk_theme/" "$HOME/.config/gtk-4.0/settings.ini"
-    sed -i "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=$gtk_icons/" "$HOME/.config/gtk-4.0/settings.ini"
-
-    sed -i "s/Net\/ThemeName \".*\"/Net\/ThemeName \"$gtk_theme\"/" "$HOME/.config/xsettingsd/xsettingsd.conf"
-    sed -i "s/Net\/IconThemeName \".*\"/Net\/IconThemeName \"$gtk_icons\"/" "$HOME/.config/xsettingsd/xsettingsd.conf"
-
-    pkill xsettingsd 2>/dev/null || true
-    sleep 0.3
-    xsettingsd &
-    log "  gtk/xsettingsd ✓ ($gtk_theme)"
-fi
-
-# 7. Save current theme
+# Save current theme
 echo "$theme" > "$CURRENT_THEME_FILE"
-log "  saved        ✓"
 
-# 8. Reload oxwm config (Mod+Shift+R)
-sleep 0.5
+# Reload oxwm (Mod+Shift+R)
+sleep 0.3
 xdotool key --clearmodifiers Super+Shift+R
-log "  oxwm reload  ✓ (Mod+Shift+R)"
+log "  oxwm reload ✓"
 
 log "Done — switched to $theme"

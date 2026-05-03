@@ -10,4 +10,9 @@ return {
     grey = "#bbbbbb",
     blue = "#6dade3",
     purple = "#ad8ee6",
+
+    text = "#c0caf5",
+    surface = "#24283b",
+    yellow = "#e0af68",
+    accent = "#bb9af7",
 }
