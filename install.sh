@@ -55,7 +55,7 @@ run_step "Install system dependencies" "./setup/install-deps.sh"
 run_step "Install OXWM" "./setup/install-oxwm.sh"
 run_step "Install slock" "./setup/install-slock.sh"
 run_step "Install applications" "./setup/install-apps.sh"
-
+run_step "Install yazi" "./setup/install-yazi.sh"
 
 run_step "Install fonts" "./setup/install-fonts.sh"
 run_step "Install Nemo files browser" "./setup/install-nemo.sh"

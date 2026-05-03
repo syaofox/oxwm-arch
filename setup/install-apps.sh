@@ -16,7 +16,6 @@ PACMAN_packages=(
     wezterm # 终端模拟器
     timeshift # 备份工具
     
-    yazi # 文件管理器
     rofi # 应用启动器
     fzf # 模糊查找工具
     fd # 文件查找工具
