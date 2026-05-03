@@ -49,4 +49,7 @@ case "$mode" in
     switch-wallpaper)
         switch-wallpaper.sh
         ;;
+    theme)
+        switch-theme.sh "$@"
+        ;;
 esac
