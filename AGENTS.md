@@ -93,6 +93,12 @@ yay is built from source: `git clone https://aur.archlinux.org/yay.git && makepk
 
 `dotfiles/.config/opencode/opencode.json`: Chrome DevTools MCP enabled, formatter disabled.
 
+## Skills
+
+| File | When to load |
+|---|---|
+| `docs/adding-theme.md` | Adding a new color theme |
+
 ## No build/test/CI
 
 This is a system provisioning repo — no conventional build, test, lint, or CI.
