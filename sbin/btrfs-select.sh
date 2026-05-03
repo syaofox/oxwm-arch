@@ -261,10 +261,16 @@ run_btrfs_optimization() {
         fi
 
         if [[ "$NOCOW" == "true" ]]; then
-            if lsattr -d "$SV_PATH" 2>/dev/null | grep -q 'C'; then
-                log_info "NoCoW confirmed on $SV_PATH"
+            if lsattr -d "$DIR" 2>/dev/null | grep -q 'C'; then
+                log_info "NoCoW confirmed on $DIR"
             else
-                log_warn "NoCoW attribute not set on $SV_PATH, new files will still use CoW"
+                log_warn "NoCoW attribute not set on $DIR, attempting to apply..."
+                chattr +C "$DIR" 2>/dev/null || true
+                if lsattr -d "$DIR" 2>/dev/null | grep -q 'C'; then
+                    log_info "NoCoW successfully applied on $DIR"
+                else
+                    log_warn "NoCoW still not reflected on $DIR"
+                fi
             fi
         fi
 
@@ -279,6 +285,10 @@ run_btrfs_optimization() {
             mv "$OLD_DIR" "$DIR"
             log_error "Failed to mount subvolume, rolled back"
         }
+
+        if [[ "$NOCOW" == "true" ]]; then
+            chattr +C "$DIR" || log_warn "Failed to set NoCoW on $DIR via mount point"
+        fi
 
         if command -v rsync &>/dev/null; then
             rsync -aAX "$OLD_DIR"/ "$DIR"/ || {
