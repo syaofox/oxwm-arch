@@ -64,7 +64,7 @@ local blocks = {
         interval = 3,
         color = colors.lavender,
         underline = false,
-        click = terminal .. " -e nvtop",
+        click = terminal .. " start --class nvtop -- nvtop",
     }),
     oxwm.bar.block.static({
         text = "│",
