@@ -14,7 +14,7 @@ case "$mode" in
         slock -m "Single is simple, double is double."
         ;;
     clipman)
-        idx=$(clipster -o -n 0 -0 | rofi -dmenu -p "剪贴板历史" -format i -i -l 10 -sep '\x00') && \
+        idx=$(clipster -o -n 0 -0 | awk 'BEGIN{RS="\0"; ORS="\0"} {gsub(/\n/, " "); if(length>100) $0=substr($0,1,100)"…"; printf "%d: %s\0", NR-1, $0}' | rofi -dmenu -p "剪贴板历史" -format i -i -l 10 -sep '\x00' -theme-str 'listview { columns: 1; }') && \
             clipster -o -N "$idx" | xclip -selection clipboard
         ;;
     term)
