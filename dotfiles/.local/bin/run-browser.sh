@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-# 优先顺序: Brave APT > Brave Flatpak > Chrome > Firefox
+# 优先顺序: Brave Nightly > Brave APT > Brave Flatpak > Chrome > Firefox
 
 set -e
 
+BRAVE_NIGHTLY="/opt/brave.com/brave-origin-nightly/brave"
 BRAVE_APT="/opt/brave-bin/brave"
 BRAVE_FLATPAK_ID="com.brave.Browser"
 CHROME_APT="/usr/bin/google-chrome-stable"
@@ -16,6 +17,10 @@ export LANG=zh_CN.UTF-8
 export LC_ALL=zh_CN.UTF-8
 
 EXTRA_ARGS=(--unsafely-treat-insecure-origin-as-secure=http://10.10.10.6:8080/)
+
+if [ -x "$BRAVE_NIGHTLY" ]; then
+    exec "$BRAVE_NIGHTLY" "--password-store=basic" "${EXTRA_ARGS[@]}" "$@"
+fi
 
 if [ -x "$BRAVE_APT" ]; then
     exec "$BRAVE_APT" "--password-store=basic" "${EXTRA_ARGS[@]}" "$@"
