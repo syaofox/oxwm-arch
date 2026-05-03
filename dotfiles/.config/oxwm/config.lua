@@ -248,6 +248,7 @@ oxwm.rule.add({ class = "Nsxiv", floating = true, focus = true })
 oxwm.rule.add({ class = "Sxiv", floating = true, focus = true })
 oxwm.rule.add({ class = "Nm-connection-editor", floating = true, focus = true })
 oxwm.rule.add({ class = "pavucontrol", floating = true, focus = true })
+oxwm.rule.add({ class = "yazi-float", floating = true, focus = true })
 
 -- oxwm.rule.add({ class = "Alacritty", tag = 9, focus = true })
 -- oxwm.rule.add({ class = "firefox", title = "Library", floating = true })

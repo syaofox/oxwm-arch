@@ -8,7 +8,7 @@ case "$mode" in
         rofi -show drun
         ;;
     file)
-        exec wezterm start -- yazi
+        exec wezterm start --class yazi-float -- yazi
         ;;
     lock)
         slock -m "Single is simple, double is double."
