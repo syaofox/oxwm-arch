@@ -35,4 +35,17 @@ if [ -z "$GNOME_KEYRING_CONTROL" ]; then
 fi
 
 
-exec dbus-run-session oxwm
+# 5. 确保 systemd --user 在运行 (pam_systemd 通常在登录时已启动)
+XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if ! systemctl --user is-system-running --quiet 2>/dev/null; then
+    /usr/lib/systemd/systemd --user &
+    for i in $(seq 1 10); do
+        systemctl --user is-system-running --quiet 2>/dev/null && break
+        sleep 0.2
+    done
+fi
+
+# 导入关键环境变量到 systemd user 实例
+systemctl --user import-environment DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP GTK_IM_MODULE QT_IM_MODULE XMODIFIERS SDL_IM_MODULE GLFW_IM_MODULE
+
+exec oxwm
