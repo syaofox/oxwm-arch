@@ -115,7 +115,7 @@ local blocks = {
         interval = 1,
         color = colors.lavender,
         underline = false,
-        click = "gnome-calendar",
+        click = terminal .. " start --class calendar -- calcurse",
     }),
     oxwm.bar.block.static({
         text = "│",
@@ -242,6 +242,7 @@ oxwm.rule.add({ class = "Io.github.celluloid_player.Celluloid", floating = true,
 oxwm.rule.add({ class = "mpv", floating = true, focus = true })
 oxwm.rule.add({ class = "Localsend", tag = 9, focus = false })
 oxwm.rule.add({ class = "FreeFileSync", tag = 9, focus = false })
+oxwm.rule.add({ class = "calendar", floating = true, focus = true })
 oxwm.rule.add({ class = "htop", floating = true, focus = true })
 oxwm.rule.add({ class = "nvtop", floating = true, focus = true })
 oxwm.rule.add({ class = "Nsxiv", floating = true, focus = true })

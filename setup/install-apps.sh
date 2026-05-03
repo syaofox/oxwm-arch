@@ -33,6 +33,7 @@ PACMAN_packages=(
     uv # Python 包管理器
     maim # 截图工具
     xwallpaper # 壁纸设置工具
+    calcurse # 终端日历
     
 )
 
