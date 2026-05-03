@@ -25,7 +25,7 @@ if [ -f ~/.Xresources.d/slock ]; then
 fi
 
 # 3. X 基础设置
-xset -dpms
+xset dpms 0 0 900
 xset s 600 s noblank
 xrandr --output Virtual-1 --mode 1440x900 &
 
