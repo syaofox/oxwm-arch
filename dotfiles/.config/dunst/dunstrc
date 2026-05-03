@@ -2,9 +2,9 @@
     monitor = 0
     follow = keyboard
     origin = top-right
-    offset = 10x50
+    offset = (10, 50)
     width = 500
-    height = 300
+    height = (0, 300)
     indicate_hidden = yes
     shrink = no
     transparency = 0
