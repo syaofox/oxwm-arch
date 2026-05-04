@@ -6,7 +6,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 log_step "Installing fonts..."
 
 FONT_packages=(
-    noto-fonts-cjk wqy-zenhei ttf-jetbrains-mono-nerd terminus-font noto-fonts-emoji
+    noto-fonts noto-fonts-cjk noto-fonts-emoji 
+    ttf-liberation ttf-dejavu
+    wqy-zenhei ttf-jetbrains-mono-nerd terminus-font 
 )
 
 if ! sudo pacman -S --needed --noconfirm "${FONT_packages[@]}"; then
