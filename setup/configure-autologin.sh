@@ -95,12 +95,11 @@ else
 fi
 
 # Configure for fish
-if command -v fish >/dev/null 2>&1; then
-    FISH_CONF_D="$FISH_CONFIG_DIR/conf.d"
-    mkdir -p "$FISH_CONF_D"
-    FISH_AUTOLOGIN_CONF="$FISH_CONF_D/autologin.fish"
-    if [[ ! -f "$FISH_AUTOLOGIN_CONF" ]]; then
-        cat > "$FISH_AUTOLOGIN_CONF" << 'EOF'
+FISH_CONF_D="$FISH_CONFIG_DIR/conf.d"
+mkdir -p "$FISH_CONF_D"
+FISH_AUTOLOGIN_CONF="$FISH_CONF_D/autologin.fish"
+if [[ ! -f "$FISH_AUTOLOGIN_CONF" ]]; then
+    cat > "$FISH_AUTOLOGIN_CONF" << 'EOF'
 # Auto-start X on tty1
 if test -z "$DISPLAY" -a "$XDG_VTNR" = "1"
     if test -f "$HOME/.local/bin/tty-lock-and-startx.sh"
@@ -108,10 +107,9 @@ if test -z "$DISPLAY" -a "$XDG_VTNR" = "1"
     end
 end
 EOF
-        log_info "Added startup entry to fish conf.d"
-    else
-        log_info "Fish autologin config already exists"
-    fi
+    log_info "Added startup entry to fish conf.d"
+else
+    log_info "Fish autologin config already exists"
 fi
 
 SUDOERS_FILE="/etc/sudoers.d/tty-lock-startx-$CURRENT_USER"
