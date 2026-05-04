@@ -1,3 +1,30 @@
+# rsync-paste.yazi
+[[mgr.prepend_keymap]]
+on   = [ "c", "r" ]
+run  = "plugin rsync-paste"
+desc = "Rsync paste (auto: y=incremental / x=move)"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "r", "r" ]
+run  = "plugin rsync-paste -i"
+desc = "Rsync paste (incremental, explicit)"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "r", "a" ]
+run  = "plugin rsync-paste -o"
+desc = "Rsync paste (overwrite, source priority)"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "r", "x" ]
+run  = "plugin rsync-paste -m"
+desc = "Rsync paste (move, remove source)"
+
+# Trash
+[[mgr.prepend_keymap]]
+on   = [ "g", "t" ]
+run  = "cd ~/.local/share/Trash/files"
+desc = "Go to trash"
+
 # compress.yazi - Archive selected files
 [[mgr.prepend_keymap]]
 on   = [ "c", "a", "a" ]
@@ -23,3 +50,8 @@ desc = "Archive selected files (compression level)"
 on   = [ "c", "a", "u" ]
 run  = "plugin compress -phl"
 desc = "Archive selected files (password+header+level)"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "m" ]
+run  = "plugin chmod"
+desc = "Chmod on selected files"

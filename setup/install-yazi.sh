@@ -12,6 +12,7 @@ fi
 
 log_info "Installing compress.yazi plugin..."
 ya pkg add KKV9/compress
+ya pkg add yazi-rs/plugins:chmod
 
 log_info "yazi installation complete"
 exit 0
