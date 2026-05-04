@@ -65,6 +65,7 @@ run_step "Install Nvidia drivers" "./setup/install-nvidia.sh"
 run_step "Install FLathub" "./setup/install-flathub.sh"
 
 run_step "Deploy configuration files" "./setup/deploy-dotfiles.sh"
+run_step "Deploy system configuration files" "./setup/deploy-sdotfiles.sh"
 run_step "Update user groups" "./setup/update-usergroup.sh"
 run_step "Install fish shell" "./setup/install-fish.sh"
 run_step "Configure autologin" "./setup/configure-autologin.sh"
